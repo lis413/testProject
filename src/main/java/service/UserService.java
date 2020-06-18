@@ -1,6 +1,7 @@
 package service;
 
 import DAO.UserJDBCDAO;
+import model.User;
 
 import java.sql.Connection;
 import java.sql.Driver;
@@ -10,6 +11,20 @@ import java.sql.SQLException;
 public class UserService {
     private UserJDBCDAO dao;
 
+
+    public void addUser(User user){
+        UserJDBCDAO dao = getUserJDBCDAO();
+        try {
+            dao.addUser(user);
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+    }
+
+    public void deleteUser(String name){
+        UserJDBCDAO dao = getUserJDBCDAO();
+        dao.deleteUser(name);
+    }
 
     private static Connection getMysqlConnection() {
         try {
@@ -36,7 +51,6 @@ public class UserService {
     }
 
     private static UserJDBCDAO getUserJDBCDAO() {
-
         return new UserJDBCDAO(getMysqlConnection());
     }
 }

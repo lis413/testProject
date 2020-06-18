@@ -13,7 +13,7 @@ public class UserJDBCDAO {
         this.connection = connection;
     }
 
-    public void addUser(User user){
+    public void addUser(User user) throws SQLException{
         String update = "insert into users (name, age, money) values (?, ?, ?)";
         try (PreparedStatement statement = connection.prepareStatement(update)){
             statement.setString (1,user.getName());

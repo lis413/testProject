@@ -26,7 +26,7 @@ public class UserJDBCDAO {
     }
 
     public void deleteUser(String name){
-        String update = "delete into users where name = '?'";
+        String update = "delete from users where name = ?";
         try (PreparedStatement statement = connection.prepareStatement(update)){
             statement.setString (1,name);
             statement.execute();
@@ -36,7 +36,7 @@ public class UserJDBCDAO {
     }
 
     public void changeUser (User user, String name){
-        String update = "UPDATE users SET name = ? age = ?  money = ? where name = ?";
+        String update = "UPDATE users SET name = ?, age = ?,  money = ? where name = ?";
         try (PreparedStatement statement = connection.prepareStatement(update)){
             statement.setString (1,user.getName());
             statement.setInt (2,user.getAge());
@@ -70,6 +70,20 @@ public class UserJDBCDAO {
         Statement stmt = connection.createStatement();
         stmt.execute("create table if not exists users (id bigint auto_increment, name varchar(256), age bigint, money bigint, primary key (id))");
         stmt.close();
+    }
+
+    public boolean userExist (String name){
+        String query = "select * from users where name = ?";
+        try (PreparedStatement statement = connection.prepareStatement(query)){
+            statement.setString (1,name);
+            ResultSet resultSet = statement.executeQuery();
+            if (resultSet == null) return false;
+            else return true;
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return false;
+
     }
 
 
